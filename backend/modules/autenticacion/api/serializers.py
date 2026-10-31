@@ -4,6 +4,13 @@ class LoginRequestSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True, write_only=True)
 
+class LoginResponseSerializer(serializers.Serializer):
+    """Estructura de respuesta REST según UC-BE-08."""
+    token = serializers.CharField()
+    type = serializers.CharField(default='Bearer')
+    username = serializers.CharField()
+    roles = serializers.ListField(child=serializers.CharField())
+
 class RegisterRequestSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150, required=True)
     email = serializers.EmailField(required=True)
@@ -15,3 +22,4 @@ class UserResponseSerializer(serializers.Serializer):
     username = serializers.CharField()
     email = serializers.EmailField()
     role = serializers.CharField()
+    roles = serializers.ListField(child=serializers.CharField(), required=False)
