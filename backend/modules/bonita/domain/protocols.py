@@ -1,5 +1,5 @@
 from typing import Protocol, List, Dict, Any, Optional
-from modules.bonita.domain.entities import BonitaProcess, BonitaCase, BonitaTask
+from modules.bonita.domain.entities import BonitaProcess, BonitaCase, BonitaTask, BonitaContractInput
 
 class IBonitaClient(Protocol):
     """Abstraction for external Bonita BPM engine communication."""
@@ -14,4 +14,10 @@ class IBonitaClient(Protocol):
         ...
 
     def execute_task(self, task_id: str, task_variables: Optional[Dict[str, Any]] = None) -> bool:
+        ...
+
+    def get_process_contract(self, process_id: str) -> List[BonitaContractInput]:
+        ...
+
+    def get_task_contract(self, task_id: str) -> List[BonitaContractInput]:
         ...

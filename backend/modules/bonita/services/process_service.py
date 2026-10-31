@@ -1,6 +1,6 @@
 from typing import List, Dict, Any, Optional
 from modules.bonita.domain.protocols import IBonitaClient
-from modules.bonita.domain.entities import BonitaProcess, BonitaCase, BonitaTask
+from modules.bonita.domain.entities import BonitaProcess, BonitaCase, BonitaTask, BonitaContractInput
 from modules.bonita.infrastructure.bonita_client import BonitaHttpClient
 
 class BonitaProcessService:
@@ -22,3 +22,9 @@ class BonitaProcessService:
 
     def complete_user_task(self, task_id: str, payload: Optional[Dict[str, Any]] = None) -> bool:
         return self._client.execute_task(task_id, payload)
+
+    def get_process_contract(self, process_id: str) -> List[BonitaContractInput]:
+        return self._client.get_process_contract(process_id)
+
+    def get_task_contract(self, task_id: str) -> List[BonitaContractInput]:
+        return self._client.get_task_contract(task_id)

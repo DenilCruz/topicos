@@ -50,3 +50,21 @@ class ExecuteTaskView(APIView):
             payload=serializer.validated_data.get('task_variables')
         )
         return Response({"success": success})
+
+class ProcessContractView(APIView):
+    """Entradas del contrato de instanciación del proceso, para construir el formulario en el cliente."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, process_id):
+        service = BonitaProcessService()
+        inputs = service.get_process_contract(process_id)
+        return Response({"success": True, "data": [asdict(i) for i in inputs]})
+
+class TaskContractView(APIView):
+    """Entradas del contrato de una tarea humana."""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, task_id):
+        service = BonitaProcessService()
+        inputs = service.get_task_contract(task_id)
+        return Response({"success": True, "data": [asdict(i) for i in inputs]})
