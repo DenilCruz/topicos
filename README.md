@@ -9,7 +9,9 @@ Este repositorio contiene la arquitectura modular y desacoplada respetando los p
 1. **`autenticacion`**: Gestión de usuarios, sesiones JWT, perfiles, roles y control de acceso (RBAC).
 2. **`bonita`**: Integración con el motor Bonita BPM (orquestación de casos, procesos y tareas humanas).
 3. **`nlp`**: Procesamiento de Lenguaje Natural (análisis de sentimiento, resumen automático y extracción de entidades), extensible mediante el protocolo `INlpEngine`.
-4. **`logs`**: Middleware de auditoría y trazabilidad en tiempo real de peticiones HTTP, estado y tiempos de respuesta.
+4. **`tickets`**: Registro y consulta de incidentes y dispositivos.
+5. **`reports`**: Reportes y visualizaciones.
+6. **`logs`**: Middleware de auditoría y trazabilidad en tiempo real de peticiones HTTP, estado y tiempos de respuesta.
 
 ---
 
@@ -17,32 +19,38 @@ Este repositorio contiene la arquitectura modular y desacoplada respetando los p
 
 ```text
 codigo/
-├── backend/                       # Backend en Django / DRF
-│   ├── config/                    # Configuración central (settings divididos, urls, wsgi/asgi)
-│   ├── core/                      # Kernel compartido (excepciones, paginación, permisos)
-│   ├── modules/                   # Paquetes de negocio
-│   │   ├── autenticacion/         # api / domain / repositories / services
-│   │   ├── bonita/                # api / domain / infrastructure / services
-│   │   ├── nlp/                   # api / domain / adapters / services
-│   │   └── logs/                  # api / domain / middleware / repositories / services
+├── data/                         # Dataset y documentación de su origen
+│   ├── raw/                      # Datos originales
+│   └── processed/                # Datos derivados
+├── notebooks/                    # Análisis exploratorio y experimentos
+├── src/                          # Código compartido de NLP y ML
+│   ├── nlp/                      # Pipeline de preprocesamiento
+│   └── models/                   # Entrenamiento y evaluación (pendiente)
+├── backend/                      # API en Django / DRF
+│   ├── config/                   # Settings, rutas y configuración del servidor
+│   ├── core/                     # Excepciones, paginación y permisos
+│   ├── modules/
+│   │   ├── autenticacion/
+│   │   ├── bonita/
+│   │   ├── nlp/                  # API y motor actual basado en reglas
+│   │   ├── logs/
+│   │   ├── tickets/
+│   │   └── reports/
 │   ├── manage.py
 │   └── requirements.txt
-│
-└── frontend/                      # Frontend en React + TypeScript + Vite
-    ├── src/
-    │   ├── config/                # Variables de entorno
-    │   ├── shared/                # HTTP client (Axios), componentes y hooks comunes
-    │   ├── modules/               # Paquetes de negocio
-    │   │   ├── autenticacion/     # components / context / hooks / services / types
-    │   │   ├── bonita/            # components / hooks / services / types
-    │   │   ├── nlp/               # components / hooks / services / types
-    │   │   └── logs/              # components / hooks / services / types
-    │   ├── routes/                # Enrutador con ProtectedRoute por roles
-    │   ├── App.tsx
-    │   └── main.tsx
-    ├── package.json
-    └── vite.config.ts
+├── frontend/                     # React + TypeScript + Vite
+│   └── src/                      # Módulos, rutas y componentes compartidos
+├── tests/                        # Pruebas de NLP/ML e integración (pendiente)
+├── docs/                         # Informe técnico y diapositivas (pendiente)
+├── bonita/                       # Artefactos de integración BPM
+├── README.md
+└── CONTRIBUCIONES.md              # Aportes verificables del equipo
 ```
+
+La estructura separa datos, experimentación, código de NLP/ML y aplicación web. `backend/` cumple el papel de la carpeta `api/` sugerida en el enunciado; las pruebas Django existentes permanecen dentro de sus aplicaciones.
+
+**Estado actual:** las carpetas académicas contienen guías para completar el proyecto. Todavía no hay dataset, notebooks de experimentación, pipeline TF-IDF entrenado ni modelos serializados. El módulo NLP del backend conserva su implementación de reglas; aún no está conectado con `src/nlp/` ni `src/models/`. Crear estas carpetas no implica que los requisitos funcionales de NLP/ML estén implementados.
+
 
 ---
 

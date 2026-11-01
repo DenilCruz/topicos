@@ -25,3 +25,6 @@ dist-ssr/
 .idea/
 *.swp
 *.swo
+
+# Notebooks
+.ipynb_checkpoints/
