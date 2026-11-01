@@ -4,9 +4,14 @@ Base settings for the Django modular architecture project.
 from pathlib import Path
 from datetime import timedelta
 import os
+import sys
 import urllib.parse as urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+RAIZ_PROYECTO = BASE_DIR.parent
+# Los artefactos serializados importan los transformadores desde src.nlp.
+sys.path.insert(0, str(RAIZ_PROYECTO))
+NLP_PIPELINE_PATH = RAIZ_PROYECTO / 'artifacts' / 'pipeline.joblib'
 
 # Cargar variables de entorno desde .env
 try:

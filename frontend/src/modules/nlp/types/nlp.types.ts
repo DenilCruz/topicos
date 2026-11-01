@@ -1,19 +1,19 @@
-export interface SentimentResult {
-  label: 'POSITIVO' | 'NEGATIVO' | 'NEUTRO';
-  score: number;
-  tokens_count: number;
-}
-
-export interface EntityResult {
-  text: string;
-  start: number;
-  end: number;
-  type: string;
+export interface PasosNlp {
+  texto_original: string;
+  texto_normalizado: string;
+  tokens: string[];
+  palabras_eliminadas: string[];
+  tokens_sin_palabras_vacias: string[];
+  metodo: string;
+  tokens_procesados: string[];
+  ngramas: string[];
+  rango_ngramas: number[];
+  caracteristicas_tfidf: { termino: string; peso: number }[];
 }
 
 export interface NlpAnalysisResponse {
-  text_length: number;
-  sentiment: SentimentResult;
-  entities: EntityResult[];
-  summary: string;
+  categoria_predecida: string;
+  probabilidad: number;
+  tiempo_inferencia_ms: number;
+  preprocesamiento: PasosNlp;
 }

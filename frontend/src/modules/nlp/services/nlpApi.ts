@@ -4,7 +4,7 @@ import { NlpAnalysisResponse } from '../types/nlp.types';
 
 export const nlpApi = {
   analyzeText: async (text: string): Promise<NlpAnalysisResponse> => {
-    const response = await httpClient.post<ApiResponse<NlpAnalysisResponse>>('/nlp/analyze/', { text });
+    const response = await httpClient.post<ApiResponse<NlpAnalysisResponse>>('/nlp/predecir/', { texto: text });
     return response.data.data;
   },
 };
