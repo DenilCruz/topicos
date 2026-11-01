@@ -1,0 +1,12 @@
+.panel-metricas { display: grid; gap: 1rem; padding: 1.5rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; min-width: 0; }
+.panel-metricas p { line-height: 1.6; }
+.metricas-tabla { overflow-x: auto; max-width: 100%; }
+.panel-metricas table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+.panel-metricas caption { text-align: left; margin: .8rem 0; font-weight: 600; }
+.panel-metricas th, .panel-metricas td { padding: .75rem; border: 1px solid var(--border); text-align: left; }
+.panel-metricas thead { background: var(--bg-primary); }
+.metricas-acierto { background: #134e4a; color: #ccfbf1; }
+.metricas-confusion { background: #78350f; color: #fef3c7; }
+.metricas-aviso { border-left: 4px solid var(--warning); padding: .75rem; background: var(--bg-primary); }
+.panel-metricas summary { cursor: pointer; padding: .8rem 0; font-weight: 600; }
+.panel-metricas ul { padding-left: 1.5rem; overflow-wrap: anywhere; }

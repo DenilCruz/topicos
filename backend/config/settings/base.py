@@ -12,6 +12,7 @@ RAIZ_PROYECTO = BASE_DIR.parent
 # Los artefactos serializados importan los transformadores desde src.nlp.
 sys.path.insert(0, str(RAIZ_PROYECTO))
 NLP_PIPELINE_PATH = RAIZ_PROYECTO / 'artifacts' / 'pipeline.joblib'
+NLP_METRICAS_PATH = RAIZ_PROYECTO / 'artifacts' / 'metricas.json'
 
 # Cargar variables de entorno desde .env
 try:
