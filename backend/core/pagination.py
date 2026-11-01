@@ -16,3 +16,18 @@ class StandardResultsSetPagination(PageNumberPagination):
             'previous': self.get_previous_link(),
             'results': data
         })
+
+class PageSizePagination(PageNumberPagination):
+    """Paginación con parámetros page/size y respuesta {content, totalElements, totalPages, number}."""
+    page_size = 20
+    page_query_param = 'page'
+    page_size_query_param = 'size'
+    max_page_size = 100
+
+    def get_paginated_response(self, data):
+        return Response({
+            'content': data,
+            'totalElements': self.page.paginator.count,
+            'totalPages': self.page.paginator.num_pages,
+            'number': self.page.number,
+        })

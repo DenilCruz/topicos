@@ -1,10 +1,15 @@
 import { httpClient } from '@/shared/http/client';
 import { ApiResponse } from '@/shared/types/common.types';
-import { BonitaProcess, BonitaCase, BonitaTask } from '../types/bonita.types';
+import { BonitaProcess, BonitaCase, BonitaTask, BonitaContractInput } from '../types/bonita.types';
 
 export const bonitaApi = {
   getProcesses: async (): Promise<BonitaProcess[]> => {
     const response = await httpClient.get<ApiResponse<BonitaProcess[]>>('/bonita/processes/');
+    return response.data.data;
+  },
+
+  getProcessContract: async (processId: string): Promise<BonitaContractInput[]> => {
+    const response = await httpClient.get<ApiResponse<BonitaContractInput[]>>(`/bonita/processes/${processId}/contract/`);
     return response.data.data;
   },
 
@@ -19,6 +24,11 @@ export const bonitaApi = {
   getTasks: async (userId?: string): Promise<BonitaTask[]> => {
     const params = userId ? { user_id: userId } : {};
     const response = await httpClient.get<ApiResponse<BonitaTask[]>>('/bonita/tasks/', { params });
+    return response.data.data;
+  },
+
+  getTaskContract: async (taskId: string): Promise<BonitaContractInput[]> => {
+    const response = await httpClient.get<ApiResponse<BonitaContractInput[]>>(`/bonita/tasks/${taskId}/contract/`);
     return response.data.data;
   },
 

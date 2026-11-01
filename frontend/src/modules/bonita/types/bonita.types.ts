@@ -21,3 +21,11 @@ export interface BonitaTask {
   case_id: string;
   assigned_id?: string;
 }
+
+/** Entrada del contrato de un proceso o tarea (LONG, INTEGER, DECIMAL, TEXT, BOOLEAN, DATE, ...). */
+export interface BonitaContractInput {
+  name: string;
+  type: string;
+  description: string | null;
+  multiple: boolean;
+}

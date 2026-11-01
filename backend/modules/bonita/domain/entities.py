@@ -24,3 +24,10 @@ class BonitaTask:
     state: str
     case_id: str
     assigned_id: Optional[str] = None
+
+@dataclass(frozen=True)
+class BonitaContractInput:
+    name: str
+    type: str
+    description: Optional[str] = None
+    multiple: bool = False

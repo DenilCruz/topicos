@@ -13,4 +13,7 @@ urlpatterns = [
     path('api/v1/bonita/', include('modules.bonita.api.urls')),
     path('api/v1/nlp/', include('modules.nlp.api.urls')),
     path('api/v1/logs/', include('modules.logs.api.urls')),
+    path('api/v1/tickets', include('modules.tickets.api.urls')),
+    path('api/v1/dispositivos/', include('modules.tickets.api.dispositivos_urls')),
+    path('api/v1/reports/', include('modules.reports.api.urls')),
 ]

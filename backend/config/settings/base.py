@@ -42,6 +42,8 @@ BUSINESS_MODULES = [
     'modules.bonita.apps.BonitaConfig',
     'modules.nlp.apps.NlpConfig',
     'modules.logs.apps.LogsConfig',
+    'modules.tickets.apps.TicketsConfig',
+    'modules.reports.apps.ReportsConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + BUSINESS_MODULES
@@ -156,6 +158,12 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+
+# Reutiliza la conexión a PostgreSQL entre peticiones: abrir una conexión TLS nueva
+# hacia Supabase en cada request añade ~1-2 s de latencia
+if DATABASES['default']['ENGINE'].endswith('postgresql'):
+    DATABASES['default']['CONN_MAX_AGE'] = int(os.environ.get('DB_CONN_MAX_AGE', '60'))
+    DATABASES['default']['CONN_HEALTH_CHECKS'] = True
 
 # CORS Configuration
 CORS_ALLOW_ALL_ORIGINS = True

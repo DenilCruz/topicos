@@ -24,6 +24,8 @@ export const Navbar: React.FC = () => {
         <h2 style={{ fontSize: '1.25rem', color: 'var(--primary)' }}>Core App</h2>
         {isAuthenticated && (
           <div style={{ display: 'flex', gap: '1.5rem' }}>
+            <Link to="/tickets" style={{ color: 'var(--text-primary)' }}>Tickets</Link>
+            <Link to="/reportes" style={{ color: 'var(--text-primary)' }}>Reportes</Link>
             <Link to="/bonita" style={{ color: 'var(--text-primary)' }}>Bonita BPM</Link>
             <Link to="/nlp" style={{ color: 'var(--text-primary)' }}>NLP</Link>
             <Link to="/logs" style={{ color: 'var(--text-primary)' }}>Logs</Link>
