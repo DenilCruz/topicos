@@ -2,6 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useNlp } from '../hooks/useNlp';
 import { ResultadoDiagnostico } from './ResultadoDiagnostico';
 import { PasosPreprocesamiento } from './PasosPreprocesamiento';
+import { PanelMetricas } from './PanelMetricas';
 
 export function NlpDashboard() {
   const [texto, cambiarTexto] = useState('');
@@ -27,5 +28,6 @@ export function NlpDashboard() {
     {error && <p role="alert">{error}</p>}
     {analysis && <><ResultadoDiagnostico resultado={analysis} />
       <PasosPreprocesamiento pasos={analysis.preprocesamiento} /></>}
+    <PanelMetricas />
   </main>;
 }

@@ -7,6 +7,66 @@ from rest_framework.exceptions import ValidationError
 from modules.nlp.api.views import DiagnosticarTicketView
 from modules.nlp.adapters.modelo_entrenado import cargar_pipeline, ModeloNoDisponible
 from modules.nlp.services.diagnostico_service import diagnosticar_ticket, TicketModificado
+from modules.nlp.api.views import MetricasModeloView, EstadoModeloView
+from modules.nlp.services.consulta_modelo import consultar_metricas, MetricasNoDisponibles
+from modules.nlp.services.consulta_modelo import consultar_revision_adicional
+import numpy as np
+
+
+class PruebasConsultasModelo(SimpleTestCase):
+    @patch('modules.nlp.services.consulta_modelo.Path.read_text', return_value='{"modelo_sha256": "otra-version"}')
+    def test_no_muestra_revision_de_otro_modelo(self, leer):
+        self.assertIsNone(consultar_revision_adicional())
+
+    def test_revision_actual_conserva_resultados(self):
+        revision = consultar_revision_adicional()
+        self.assertIsNotNone(revision)
+        self.assertEqual(len(revision['casos']), 18)
+        self.assertAlmostEqual(revision['accuracy'], 10 / 18)
+
+    def consultar(self, vista, autenticar=True):
+        solicitud = APIRequestFactory().get('/')
+        if autenticar:
+            force_authenticate(solicitud, user=SimpleNamespace(is_authenticated=True))
+        return vista.as_view()(solicitud)
+
+    def test_metricas_del_archivo_actual(self):
+        respuesta = self.consultar(MetricasModeloView)
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertEqual(set(respuesta.data['data']['modelos']), {'regresion_logistica', 'naive_bayes'})
+        self.assertNotIn('indices_entrenamiento', respuesta.data['data'])
+
+    @patch('modules.nlp.services.consulta_modelo.Path.read_text', side_effect=FileNotFoundError)
+    def test_metricas_ausentes(self, leer):
+        self.assertEqual(self.consultar(MetricasModeloView).status_code, 503)
+
+    @patch('modules.nlp.services.consulta_modelo.Path.read_text', return_value='{}')
+    def test_metricas_incompletas(self, leer):
+        with self.assertRaises(MetricasNoDisponibles):
+            consultar_metricas()
+
+    @patch('modules.nlp.services.consulta_modelo.Path.read_text', return_value='no es JSON')
+    def test_metricas_corruptas(self, leer):
+        self.assertEqual(self.consultar(MetricasModeloView).status_code, 503)
+
+    @patch('modules.nlp.services.consulta_modelo.cargar_pipeline')
+    def test_estado_listo(self, cargar):
+        cargar.return_value = SimpleNamespace(classes_=['a', 'b'],
+                                              predict_proba=lambda textos: np.array([[0.4, 0.6]]))
+        respuesta = self.consultar(EstadoModeloView)
+        self.assertEqual(respuesta.status_code, 200)
+        self.assertTrue(respuesta.data['data']['pipeline_disponible'])
+
+    @patch('modules.nlp.services.consulta_modelo.cargar_pipeline', side_effect=ModeloNoDisponible)
+    def test_estado_sin_modelo(self, cargar):
+        respuesta = self.consultar(EstadoModeloView)
+        self.assertEqual(respuesta.status_code, 503)
+        self.assertTrue(respuesta.data['data']['servicio_activo'])
+        self.assertFalse(respuesta.data['data']['pipeline_disponible'])
+
+    def test_consultas_requieren_autenticacion(self):
+        for vista in [EstadoModeloView, MetricasModeloView]:
+            self.assertEqual(self.consultar(vista, autenticar=False).status_code, 401)
 
 
 class PruebasDiagnostico(SimpleTestCase):

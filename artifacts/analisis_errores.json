@@ -1,0 +1,321 @@
+{
+  "accuracy": 0.5555555555555556,
+  "reporte": {
+    "CONGESTION_WIFI": {
+      "precision": 1.0,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.8,
+      "support": 3.0
+    },
+    "FALLO_DHCP": {
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1-score": 0.6666666666666666,
+      "support": 3.0
+    },
+    "FUNCIONAMIENTO_NORMAL": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 3.0
+    },
+    "LATENCIA_ALTA": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 3.0
+    },
+    "RIESGO_SEGURIDAD_DNS": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "SENAL_DEBIL": {
+      "precision": 0.6666666666666666,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.6666666666666666,
+      "support": 3.0
+    },
+    "accuracy": 0.5555555555555556,
+    "macro avg": {
+      "precision": 0.5277777777777778,
+      "recall": 0.5555555555555555,
+      "f1-score": 0.5222222222222223,
+      "support": 18.0
+    },
+    "weighted avg": {
+      "precision": 0.5277777777777778,
+      "recall": 0.5555555555555556,
+      "f1-score": 0.5222222222222223,
+      "support": 18.0
+    }
+  },
+  "categorias": [
+    "CONGESTION_WIFI",
+    "FALLO_DHCP",
+    "FUNCIONAMIENTO_NORMAL",
+    "LATENCIA_ALTA",
+    "RIESGO_SEGURIDAD_DNS",
+    "SENAL_DEBIL"
+  ],
+  "matriz_confusion": [
+    [
+      2,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      3,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      2,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      3,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      2
+    ]
+  ],
+  "errores": [
+    {
+      "texto": "La conexión funciona junto al router, pero se corta al entrar al dormitorio. Acercar el equipo restaura el servicio.",
+      "categoria_real": "SENAL_DEBIL",
+      "categoria_predicha": "FUNCIONAMIENTO_NORMAL"
+    },
+    {
+      "texto": "El cable está conectado y la recepción es excelente, pero cada ping tarda medio segundo. No se detecta saturación del canal inalámbrico.",
+      "categoria_real": "LATENCIA_ALTA",
+      "categoria_predicha": "FALLO_DHCP"
+    },
+    {
+      "texto": "La videollamada responde con retraso: se midieron 700 milisegundos de ida y vuelta en el enlace cableado, sin problemas de asignación IP.",
+      "categoria_real": "LATENCIA_ALTA",
+      "categoria_predicha": "FALLO_DHCP"
+    },
+    {
+      "texto": "Los paquetes llegan sin pérdidas, pero el eco del servidor tarda 900 ms. La transferencia conserva su velocidad habitual.",
+      "categoria_real": "LATENCIA_ALTA",
+      "categoria_predicha": "FUNCIONAMIENTO_NORMAL"
+    },
+    {
+      "texto": "La red se vuelve lenta cuando se conectan cuarenta clientes al punto de acceso. La señal es buena y el uso del canal llega al 98%.",
+      "categoria_real": "CONGESTION_WIFI",
+      "categoria_predicha": "SENAL_DEBIL"
+    },
+    {
+      "texto": "Se completaron las pruebas de conectividad: la IP se obtuvo correctamente, los nombres resuelven y las aplicaciones responden dentro del tiempo esperado.",
+      "categoria_real": "FUNCIONAMIENTO_NORMAL",
+      "categoria_predicha": "LATENCIA_ALTA"
+    },
+    {
+      "texto": "El monitoreo no detecta incidentes: todas las interfaces están activas, no hay paquetes perdidos y el usuario confirma que puede trabajar.",
+      "categoria_real": "FUNCIONAMIENTO_NORMAL",
+      "categoria_predicha": "FALLO_DHCP"
+    },
+    {
+      "texto": "No hay señal débil ni congestión; la latencia se mantiene en 12 ms. DHCP y DNS respondieron correctamente durante toda la revisión.",
+      "categoria_real": "FUNCIONAMIENTO_NORMAL",
+      "categoria_predicha": "LATENCIA_ALTA"
+    }
+  ],
+  "casos": [
+    {
+      "texto": "La conexión funciona junto al router, pero se corta al entrar al dormitorio. Acercar el equipo restaura el servicio.",
+      "categoria": "SENAL_DEBIL",
+      "justificacion_etiqueta": "La dependencia de la distancia y la recuperación al acercarse apuntan a cobertura insuficiente.",
+      "prediccion": "FUNCIONAMIENTO_NORMAL",
+      "acierto": false,
+      "probabilidad": 0.3149515880430325,
+      "terminos_reconocidos": 2
+    },
+    {
+      "texto": "El punto de acceso está detrás de dos muros gruesos. El indicador de recepción muestra una sola barra y mejora al salir al pasillo.",
+      "categoria": "SENAL_DEBIL",
+      "justificacion_etiqueta": "Los obstáculos y la recepción baja sustentan una hipótesis de señal débil.",
+      "prediccion": "SENAL_DEBIL",
+      "acierto": true,
+      "probabilidad": 0.6236244881609819,
+      "terminos_reconocidos": 3
+    },
+    {
+      "texto": "Con el teléfono al lado del punto de acceso todo funciona; al alejarlo veinte metros pierde conexión. No hay otros usuarios conectados.",
+      "categoria": "SENAL_DEBIL",
+      "justificacion_etiqueta": "El escenario controla la carga y relaciona el problema con la distancia.",
+      "prediccion": "SENAL_DEBIL",
+      "acierto": true,
+      "probabilidad": 0.23517430035467385,
+      "terminos_reconocidos": 7
+    },
+    {
+      "texto": "El equipo muestra 169.254.12.8 y no tiene puerta de enlace. El servidor de asignación automática está detenido; con IP manual puede navegar.",
+      "categoria": "FALLO_DHCP",
+      "justificacion_etiqueta": "La dirección de enlace local, el servicio detenido y la recuperación con IP manual indican fallo de asignación.",
+      "prediccion": "FALLO_DHCP",
+      "acierto": true,
+      "probabilidad": 0.3703833254450729,
+      "terminos_reconocidos": 5
+    },
+    {
+      "texto": "La solicitud de concesión no recibe respuesta. Se agotaron las direcciones disponibles del ámbito DHCP; el cable y el enlace funcionan.",
+      "categoria": "FALLO_DHCP",
+      "justificacion_etiqueta": "El agotamiento explícito del ámbito impide conceder direcciones.",
+      "prediccion": "FALLO_DHCP",
+      "acierto": true,
+      "probabilidad": 0.5084091543805395,
+      "terminos_reconocidos": 4
+    },
+    {
+      "texto": "Después de vencer la concesión, la estación no consigue renovarla. El administrador confirma que el servicio DHCP dejó de responder.",
+      "categoria": "FALLO_DHCP",
+      "justificacion_etiqueta": "El fallo de renovación y la comprobación del servicio apoyan la etiqueta.",
+      "prediccion": "FALLO_DHCP",
+      "acierto": true,
+      "probabilidad": 0.6460934587570418,
+      "terminos_reconocidos": 3
+    },
+    {
+      "texto": "El cable está conectado y la recepción es excelente, pero cada ping tarda medio segundo. No se detecta saturación del canal inalámbrico.",
+      "categoria": "LATENCIA_ALTA",
+      "justificacion_etiqueta": "Hay demora de respuesta explícita y se descarta congestión Wi-Fi en el escenario.",
+      "prediccion": "FALLO_DHCP",
+      "acierto": false,
+      "probabilidad": 0.2471516265963707,
+      "terminos_reconocidos": 4
+    },
+    {
+      "texto": "La videollamada responde con retraso: se midieron 700 milisegundos de ida y vuelta en el enlace cableado, sin problemas de asignación IP.",
+      "categoria": "LATENCIA_ALTA",
+      "justificacion_etiqueta": "La medición de ida y vuelta elevada en cableado señala latencia.",
+      "prediccion": "FALLO_DHCP",
+      "acierto": false,
+      "probabilidad": 0.2669617546296302,
+      "terminos_reconocidos": 6
+    },
+    {
+      "texto": "Los paquetes llegan sin pérdidas, pero el eco del servidor tarda 900 ms. La transferencia conserva su velocidad habitual.",
+      "categoria": "LATENCIA_ALTA",
+      "justificacion_etiqueta": "La demora medida existe aun sin pérdida de paquetes ni caída de transferencia.",
+      "prediccion": "FUNCIONAMIENTO_NORMAL",
+      "acierto": false,
+      "probabilidad": 0.4236466867335131,
+      "terminos_reconocidos": 5
+    },
+    {
+      "texto": "Todos los vecinos usan el mismo canal inalámbrico. El analizador registra ocupación del 96%; cambiar a un canal libre recupera el rendimiento.",
+      "categoria": "CONGESTION_WIFI",
+      "justificacion_etiqueta": "La ocupación y recuperación al cambiar de canal apoyan congestión.",
+      "prediccion": "CONGESTION_WIFI",
+      "acierto": true,
+      "probabilidad": 0.6659704441670221,
+      "terminos_reconocidos": 5
+    },
+    {
+      "texto": "La red se vuelve lenta cuando se conectan cuarenta clientes al punto de acceso. La señal es buena y el uso del canal llega al 98%.",
+      "categoria": "CONGESTION_WIFI",
+      "justificacion_etiqueta": "La alta ocupación del medio con buena señal apunta a congestión Wi-Fi.",
+      "prediccion": "SENAL_DEBIL",
+      "acierto": false,
+      "probabilidad": 0.395946134955942,
+      "terminos_reconocidos": 9
+    },
+    {
+      "texto": "Dos puntos de acceso transmiten en el mismo canal y compiten por el medio. Separarlos en canales no solapados elimina las retransmisiones.",
+      "categoria": "CONGESTION_WIFI",
+      "justificacion_etiqueta": "La contención del medio y el resultado de cambiar canales sustentan la clase.",
+      "prediccion": "CONGESTION_WIFI",
+      "acierto": true,
+      "probabilidad": 0.2785851616262112,
+      "terminos_reconocidos": 5
+    },
+    {
+      "texto": "El sistema de seguridad bloqueó consultas repetidas a dominios de mando y control. El origen es una cámara y el hallazgo está confirmado por el analista.",
+      "categoria": "RIESGO_SEGURIDAD_DNS",
+      "justificacion_etiqueta": "Las consultas a dominios maliciosos confirmadas apoyan riesgo de seguridad DNS.",
+      "prediccion": "RIESGO_SEGURIDAD_DNS",
+      "acierto": true,
+      "probabilidad": 0.35959032697544857,
+      "terminos_reconocidos": 5
+    },
+    {
+      "texto": "El resolutor registra cientos de subdominios aleatorios por minuto desde una estación; el analista identifica un posible túnel DNS.",
+      "categoria": "RIESGO_SEGURIDAD_DNS",
+      "justificacion_etiqueta": "El patrón de consultas sugiere riesgo DNS; no confirma por sí solo infección.",
+      "prediccion": "RIESGO_SEGURIDAD_DNS",
+      "acierto": true,
+      "probabilidad": 0.6490249395465136,
+      "terminos_reconocidos": 2
+    },
+    {
+      "texto": "Una computadora consulta dominios incluidos en la lista de amenazas. El filtro DNS los bloquea aunque el acceso general a Internet funciona.",
+      "categoria": "RIESGO_SEGURIDAD_DNS",
+      "justificacion_etiqueta": "El bloqueo de dominios de amenazas corresponde a riesgo DNS, no a una caída general.",
+      "prediccion": "RIESGO_SEGURIDAD_DNS",
+      "acierto": true,
+      "probabilidad": 0.391143834834146,
+      "terminos_reconocidos": 6
+    },
+    {
+      "texto": "Se completaron las pruebas de conectividad: la IP se obtuvo correctamente, los nombres resuelven y las aplicaciones responden dentro del tiempo esperado.",
+      "categoria": "FUNCIONAMIENTO_NORMAL",
+      "justificacion_etiqueta": "Las comprobaciones informadas no muestran anomalías.",
+      "prediccion": "LATENCIA_ALTA",
+      "acierto": false,
+      "probabilidad": 0.34987067651713444,
+      "terminos_reconocidos": 4
+    },
+    {
+      "texto": "El monitoreo no detecta incidentes: todas las interfaces están activas, no hay paquetes perdidos y el usuario confirma que puede trabajar.",
+      "categoria": "FUNCIONAMIENTO_NORMAL",
+      "justificacion_etiqueta": "Se informa ausencia de incidentes y funcionamiento comprobado.",
+      "prediccion": "FALLO_DHCP",
+      "acierto": false,
+      "probabilidad": 0.23285038895719196,
+      "terminos_reconocidos": 6
+    },
+    {
+      "texto": "No hay señal débil ni congestión; la latencia se mantiene en 12 ms. DHCP y DNS respondieron correctamente durante toda la revisión.",
+      "categoria": "FUNCIONAMIENTO_NORMAL",
+      "justificacion_etiqueta": "Es un control de negación: menciona fallas para descartarlas y aporta mediciones normales.",
+      "prediccion": "LATENCIA_ALTA",
+      "acierto": false,
+      "probabilidad": 0.2121993456204377,
+      "terminos_reconocidos": 10
+    }
+  ],
+  "modelo_sha256": "c8b15dc1cf30303fb101c0f1daeef0f0e2c2b19b9d9102233ed5d4e88b390b94",
+  "casos_sha256": "cdb77f3ea77580e37ac23504bc4b0fc3ac1d9b3dc34dc84b2e5ea8a2923ac9ea",
+  "origen": "18 casos sintéticos elaborados con asistencia de IA; etiquetas pendientes de revisión técnica humana."
+}

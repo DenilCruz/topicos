@@ -1,7 +1,12 @@
-# Análisis exploratorio y experimentos
+# Notebook de análisis
 
-Guardar aquí los notebooks de distribución de clases, longitud de textos, palabras frecuentes, valores faltantes y análisis de errores.
+Abrir 01_exploracion_y_experimentos.ipynb en VS Code con las extensiones Python y
+Jupyter. Instalar dependencias desde la raíz: python -m pip install -r requirements-analisis.txt.
+Seleccionar ese entorno Python y ejecutar todas las celdas en orden.
 
-Comparar stemming frente a lematización, unigramas frente a unigramas con bigramas y los modelos elegidos. Separar entrenamiento y prueba antes de ajustar transformaciones. Ajustar TF-IDF e hiperparámetros únicamente con los datos de entrenamiento y sus particiones de validación cruzada.
+El notebook ya incluye resultados y gráficos ejecutados. Lee data/raw/incidentes_es.csv
+y artifacts/metricas.json; comprueba que el hash del CSV coincida con las métricas.
+No vuelve a entrenar los modelos ni modifica el dataset.
 
-El código reutilizable debe vivir en `src/`, no quedar disponible únicamente dentro de un notebook.
+Incluye calidad de datos, distribución, longitudes, palabras frecuentes, plantillas,
+comparación de experimentos, métricas por clase, matrices de confusión y limitaciones.

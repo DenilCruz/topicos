@@ -9,6 +9,23 @@ from modules.nlp.adapters.modelo_entrenado import cargar_pipeline, predecir_diag
 from django.conf import settings
 from src.nlp.explicacion import explicar_pipeline_entrenado
 from modules.nlp.services.nlp_service import NlpService
+from modules.nlp.services.consulta_modelo import consultar_metricas, consultar_estado
+
+
+class MetricasModeloView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({'success': True, 'data': consultar_metricas()})
+
+
+class EstadoModeloView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        estado = consultar_estado()
+        codigo = status.HTTP_200_OK if estado['pipeline_disponible'] else status.HTTP_503_SERVICE_UNAVAILABLE
+        return Response({'success': estado['pipeline_disponible'], 'data': estado}, status=codigo)
 
 class AnalyzeTextView(APIView):
     permission_classes = [IsAuthenticated]
