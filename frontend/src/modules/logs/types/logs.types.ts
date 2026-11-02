@@ -17,4 +17,14 @@ export interface LogFilterParams {
   severity?: string;
   user?: string;
   page?: number;
+  page_size?: number;
+  method?: string;
+  search?: string;
+}
+
+export interface RespuestaLogs {
+  results: AuditLogItem[]; count: number; current_page: number; total_pages: number;
+  next: string | null; previous: string | null;
+  resumen: { total: number; errores: number; advertencias: number; duracion_media_ms: number | null };
+  opciones: { severidades: string[]; metodos: string[] };
 }

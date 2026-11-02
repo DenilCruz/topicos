@@ -165,6 +165,15 @@ VOICE_SYSTEM_PROMPT = (
 
 VOICE_QUERY_MAX_LENGTH = 1000
 
+
+def crear_cliente_ia(proveedor='deepseek'):
+    if proveedor == 'groq':
+        from .groq_client import GroqClient
+        return GroqClient()
+    if proveedor == 'deepseek':
+        return DeepSeekClient()
+    raise DomainException('Proveedor de IA no reconocido.', code='LLM_PROVIDER_INVALID')
+
 class VoiceReportService:
     def __init__(self, llm_client: Optional[DeepSeekClient] = None):
         self._llm = llm_client or DeepSeekClient()

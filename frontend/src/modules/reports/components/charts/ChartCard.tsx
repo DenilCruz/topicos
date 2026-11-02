@@ -12,7 +12,7 @@ export const ChartCard: React.FC<ChartCardProps> = ({ title, subtitle, table, ch
   const [showTable, setShowTable] = useState(false);
 
   return (
-    <section style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '8px', padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: 0 }}>
+    <section className="reporte-grafico">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
         <div>
           <h3 style={{ fontSize: '1rem' }}>{title}</h3>

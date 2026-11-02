@@ -5,6 +5,10 @@ import { ExecutiveReport, ReportMetrics, ReportTicketFilters, VoiceReportRespons
 const EXPORT_PAGE_SIZE = 100;
 
 export const reportsApi = {
+  getOptions: async (): Promise<{ estados: string[]; prioridades: string[] }> => {
+    const respuesta = await httpClient.get('/reports/opciones');
+    return respuesta.data;
+  },
   /** Métricas crudas del ORM; no invoca al LLM. */
   getMetrics: async (dias = 7): Promise<ReportMetrics> => {
     const response = await httpClient.get<{ metrics: ReportMetrics }>('/reports/metrics', { params: { dias } });
@@ -12,14 +16,14 @@ export const reportsApi = {
   },
 
   /** Métricas + resumen ejecutivo en Markdown redactado por DeepSeek. */
-  getExecutiveReport: async (dias = 7): Promise<ExecutiveReport> => {
-    const response = await httpClient.get<ExecutiveReport>('/reports/executive', { params: { dias }, timeout: 60000 });
+  getExecutiveReport: async (dias = 7, proveedor: 'deepseek' | 'groq' = 'deepseek'): Promise<ExecutiveReport> => {
+    const response = await httpClient.get<ExecutiveReport>('/reports/executive', { params: { dias, proveedor }, timeout: 60000 });
     return response.data;
   },
 
   /** Envía la consulta transcrita por voz; el backend responde un reporte en Markdown generado con IA. */
-  generateReportFromVoice: async (texto: string, signal?: AbortSignal, dias = 7): Promise<VoiceReportResponse> => {
-    const response = await httpClient.post<VoiceReportResponse>('/reports/voice', { texto, dias }, { signal, timeout: 60000 });
+  generateReportFromVoice: async (texto: string, signal?: AbortSignal, dias = 7, proveedor: 'deepseek' | 'groq' = 'deepseek'): Promise<VoiceReportResponse> => {
+    const response = await httpClient.post<VoiceReportResponse>('/reports/voice', { texto, dias, proveedor }, { signal, timeout: 60000 });
     return response.data;
   },
 

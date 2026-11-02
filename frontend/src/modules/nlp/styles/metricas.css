@@ -1,4 +1,4 @@
-.panel-metricas { display: grid; gap: 1rem; padding: 1.5rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; min-width: 0; }
+.panel-metricas { display: grid; gap: 1rem; padding: 24px; background: #101b2c; border: 1px solid #263b55; border-radius: 10px; min-width: 0; }
 .panel-metricas p { line-height: 1.6; }
 .metricas-tabla { overflow-x: auto; max-width: 100%; }
 .panel-metricas table { border-collapse: collapse; width: 100%; font-size: .9rem; }
@@ -10,3 +10,8 @@
 .metricas-aviso { border-left: 4px solid var(--warning); padding: .75rem; background: var(--bg-primary); }
 .panel-metricas summary { cursor: pointer; padding: .8rem 0; font-weight: 600; }
 .panel-metricas ul { padding-left: 1.5rem; overflow-wrap: anywhere; }
+.panel-metricas summary:hover { color: #7dd3fc; }
+.panel-metricas tbody tr:hover { background: #15263c; }
+.panel-metricas table { min-width: 640px; }
+.nlp-desplegable { border-bottom: 1px solid #263b55; padding-bottom: 8px; }
+.nlp-evaluacion-adicional { padding-top: 20px; border-top: 1px solid #263b55; display: grid; gap: 10px; }

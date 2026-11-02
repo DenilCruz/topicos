@@ -1,0 +1,55 @@
+.nlp-pagina { --nlp-acento: #38bdf8; max-width: 1440px; margin: auto; padding: 32px 28px 56px; display: grid; gap: 24px; color: #cbd5e1; font-size: 14px; }
+.nlp-pagina h1 { font-size: clamp(24px, 3vw, 32px); letter-spacing: -.03em; color: #f8fafc; }
+.nlp-pagina h2 { font-size: 18px; color: #f8fafc; }
+.nlp-pagina h3 { font-size: 14px; color: #e2e8f0; }
+.nlp-pagina p { line-height: 1.65; }
+.nlp-cabecera { display: grid; gap: 8px; }
+.nlp-etiqueta { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: #94a3b8; margin-bottom: 6px; }
+.nlp-formulario { display: grid; gap: 10px; }
+.nlp-formulario label { font-weight: 600; }
+.nlp-formulario textarea { width: 100%; min-height: 140px; padding: 16px; resize: vertical; line-height: 1.7; background: #0b1324; border-color: #29425f; transition: border-color .2s, box-shadow .2s; }
+.nlp-formulario textarea:focus { outline: none; border-color: var(--nlp-acento); box-shadow: 0 0 0 3px #38bdf81a; }
+.nlp-fila { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.nlp-secundario { color: #94a3b8; font-size: 12px; }
+.nlp-acciones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.nlp-boton { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; color: #e2e8f0; background: transparent; border: 1px solid #334155; }
+.nlp-boton:hover:not(:disabled) { background: #1e293b; border-color: var(--nlp-acento); }
+.nlp-boton-principal { background: #12304a; border-color: #2583b2; color: #bae6fd; }
+.nlp-boton:disabled { opacity: .6; cursor: wait; }
+.nlp-boton:focus-visible, .nlp-pagina summary:focus-visible { outline: 2px solid var(--nlp-acento); outline-offset: 4px; }
+.nlp-insignia { font-size: 12px; padding: 5px 10px; border-radius: 20px; color: #7dd3fc; background: #0c2940; border: 1px solid #256088; }
+.nlp-resultado, .nlp-progreso, .nlp-pasos { border: 1px solid #263b55; background: #101c30; border-radius: 10px; padding: 22px; }
+.nlp-resultado header { padding-bottom: 16px; border-bottom: 1px solid #263b55; }
+.nlp-resultado-datos { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; padding: 24px 0; }
+.nlp-categoria { font-size: 20px; font-weight: 600; color: #f8fafc; overflow-wrap: anywhere; }
+.nlp-numero { font-size: 24px; font-weight: 600; color: #7dd3fc; font-variant-numeric: tabular-nums; }
+.nlp-resultado footer { border-top: 1px solid #263b55; padding-top: 14px; color: #94a3b8; font-size: 12px; }
+.nlp-punto { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--nlp-acento); margin-right: 8px; }
+.nlp-progreso { display: grid; gap: 14px; }
+.nlp-progreso .nlp-fila { justify-content: flex-start; }
+.nlp-spinner { width: 16px; height: 16px; flex-shrink: 0; border: 2px solid #334155; border-top-color: var(--nlp-acento); border-radius: 50%; animation: nlp-girar .8s linear infinite; }
+.nlp-progreso-barra { height: 4px; background: #1e293b; border-radius: 4px; overflow: hidden; }
+.nlp-progreso-barra span { display: block; width: 30%; height: 100%; background: var(--nlp-acento); animation: nlp-avanzar 1.5s ease-in-out infinite alternate; }
+.nlp-error { padding: 16px; border: 1px solid #7f1d1d; background: #350f18; border-radius: 8px; color: #fecaca; }
+.nlp-pasos { display: grid; gap: 16px; }
+.nlp-paso { padding: 14px; background: #0b1527; border: 1px solid #1e334d; border-radius: 6px; overflow-wrap: anywhere; }
+.nlp-paso h3 { margin-bottom: 8px; color: #7dd3fc; }
+.nlp-pasos table { width: 100%; border-collapse: collapse; }
+.nlp-pasos th, .nlp-pasos td { text-align: left; padding: 10px; border-bottom: 1px solid #263b55; overflow-wrap: anywhere; }
+@keyframes nlp-girar { to { transform: rotate(360deg); } }
+.nlp-etapas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; list-style: none; padding: 0; margin: 0; }
+.nlp-etapa { display: flex; align-items: center; gap: 12px; padding: 14px; min-width: 0; border: 1px solid #29425f; border-radius: 6px; background: #0b1527; }
+.nlp-etapa h3 { font-size: 13px; overflow-wrap: anywhere; }
+.nlp-etapa p { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+.nlp-etapa-icono { display: grid; place-items: center; width: 23px; height: 23px; flex-shrink: 0; border: 1px solid #386488; border-radius: 50%; color: #7dd3fc; font-size: 12px; }
+.nlp-etapa { transition: background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease; }
+.nlp-etapa-icono, .nlp-etapa p { transition: color 300ms ease, background-color 300ms ease, border-color 300ms ease; }
+.nlp-etapa-completada { border-color: #34d399; background: #102b29; box-shadow: 0 0 12px #34d39920; animation: nlp-encender 450ms ease-out; }
+@keyframes nlp-encender { from { box-shadow: 0 0 0 transparent; transform: translateY(2px); } to { box-shadow: 0 0 12px #34d39920; transform: translateY(0); } }
+.nlp-etapa-completada .nlp-etapa-icono { border-color: #34d399; color: #6ee7b7; background: #123a32; }
+.nlp-etapa-completada p { color: #6ee7b7; }
+@media (max-width: 900px) { .nlp-etapas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 500px) { .nlp-etapas { grid-template-columns: 1fr; } }
+@keyframes nlp-avanzar { to { transform: translateX(230%); } }
+@media (max-width: 700px) { .nlp-pagina { padding: 24px 16px; } .nlp-resultado-datos { grid-template-columns: 1fr; gap: 16px; } .nlp-resultado, .nlp-progreso, .nlp-pasos { padding: 16px; } }
+@media (prefers-reduced-motion: reduce) { .nlp-pagina * { animation: none !important; transition: none !important; } }

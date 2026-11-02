@@ -102,29 +102,17 @@ class AuthenticationTestCase(TestCase):
         response_without_slash = self.client.post("/api/v1/auth/login", payload, format="json")
         self.assertEqual(response_without_slash.status_code, status.HTTP_200_OK)
 
-    def test_uc_be_09_auditable_interceptor_persists_audit_log(self):
-        """
-        UC-BE-09: Verifica que el interceptor @auditable registre la operación de diagnóstico
-        en la tabla audit_logs indicando duración, texto y predicción emitida sin interferir.
-        """
+    def test_uc_be_09_interceptor_usa_columnas_de_supabase(self):
+        from unittest.mock import patch
         from modules.autenticacion.audit import auditable
-        from modules.autenticacion.domain.models import AuditLog
 
         @auditable("DiagnosticoML")
-        def mock_servicio_inferencia(texto: str):
-            return {"categoria": "Configuracion_Switch_L2", "probabilidad": 0.942, "prioridad": "Alta"}
+        def servicio(texto):
+            return {"categoria": "Configuracion_Switch_L2"}
 
-        texto_incidente = "El switch cisco del piso 2 tiene puertos bloqueados por spanning tree"
-        resultado = mock_servicio_inferencia(texto_incidente)
-
-        # La función debe ejecutarse normalmente
-        self.assertEqual(resultado["categoria"], "Configuracion_Switch_L2")
-
-        # Verificar que el registro de auditoría fue persistido
-        log_entry = AuditLog.objects.filter(path="operation://DiagnosticoML").first()
-        self.assertIsNotNone(log_entry, "El registro de auditoría debió guardarse en la tabla audit_logs")
-        self.assertIn("Configuracion_Switch_L2", log_entry.message)
-        self.assertIn("spanning tree", log_entry.message)
-        self.assertGreaterEqual(log_entry.duration_ms, 0)
-        self.assertEqual(log_entry.status_code, 200)
-
+        with patch('modules.autenticacion.domain.models.AuditLog.objects.create') as crear:
+            resultado = servicio("El switch presenta puertos bloqueados por spanning tree")
+        campos = crear.call_args.kwargs
+        self.assertEqual(campos['prediccion_emitida'], resultado['categoria'])
+        self.assertIn('spanning tree', campos['texto_analizado'])
+        self.assertGreaterEqual(campos['tiempo_ejecucion_ms'], 0)

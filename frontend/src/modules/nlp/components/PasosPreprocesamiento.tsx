@@ -9,9 +9,9 @@ export function PasosPreprocesamiento({ pasos }: { pasos: PasosNlp }) {
     [pasos.metodo === 'stemming' ? '4. Stemming: raíces' : '4. Lematización: lemas', pasos.tokens_procesados.join(' · ') || 'Ninguno'],
     [`5. N-gramas (rango ${pasos.rango_ngramas.join(' a ')})`, pasos.ngramas.join(' · ') || 'Ninguno'],
   ];
-  return <section aria-labelledby="pasos-nlp">
+  return <section className="nlp-pasos" aria-labelledby="pasos-nlp">
     <h2 id="pasos-nlp">Preprocesamiento paso a paso</h2>
-    {etapas.map(([titulo, contenido]) => <div key={titulo} style={{ marginBottom: '1rem', overflowWrap: 'anywhere' }}>
+    {etapas.map(([titulo, contenido]) => <div className="nlp-paso" key={titulo}>
       <h3>{titulo}</h3><p>{contenido || 'El texto quedó vacío.'}</p>
     </div>)}
     <h3>6. TF-IDF</h3>

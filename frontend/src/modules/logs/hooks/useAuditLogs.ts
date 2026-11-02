@@ -1,35 +1,31 @@
-import { useState, useEffect } from 'react';
-import { AuditLogItem, LogFilterParams } from '../types/logs.types';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { LogFilterParams, RespuestaLogs } from '../types/logs.types';
 import { logsApi } from '../services/logsApi';
 
-export const useAuditLogs = () => {
-  const [logs, setLogs] = useState<AuditLogItem[]>([]);
-  const [filters, setFilters] = useState<LogFilterParams>({});
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [totalCount, setTotalCount] = useState<number>(0);
-
-  const fetchLogs = async (currentFilters: LogFilterParams) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await logsApi.getAuditLogs(currentFilters);
-      setLogs(data.results || []);
-      setTotalCount(data.count || 0);
-    } catch (err: any) {
-      setError(err?.response?.data?.error?.message || 'Error al obtener registros de auditoría.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export function useAuditLogs() {
+  const [datos, cambiarDatos] = useState<RespuestaLogs | null>(null);
+  const [filters, cambiarFiltros] = useState<LogFilterParams>({ page: 1, page_size: 20 });
+  const [loading, cambiarCarga] = useState(true);
+  const [error, cambiarError] = useState('');
+  const [actualizado, cambiarActualizado] = useState<Date | null>(null);
+  const [intento, cambiarIntento] = useState(0);
   useEffect(() => {
-    fetchLogs(filters);
-  }, [filters]);
-
-  const updateFilters = (newFilters: Partial<LogFilterParams>) => {
-    setFilters((prev) => ({ ...prev, ...newFilters }));
-  };
-
-  return { logs, loading, error, totalCount, filters, updateFilters, refresh: () => fetchLogs(filters) };
-};
+    let vigente = true;
+    cambiarCarga(true); cambiarError('');
+    logsApi.getAuditLogs(filters).then(respuesta => {
+      if (vigente) { cambiarDatos(respuesta); cambiarActualizado(new Date()); }
+    }).catch((fallo: unknown) => {
+      if (!vigente) return;
+      cambiarDatos(null);
+      const detalle = axios.isAxiosError(fallo) ? fallo.response?.data?.error : null;
+      cambiarError(detalle?.message || detalle?.details?.detail || 'No se pudieron cargar los registros.');
+    }).finally(() => { if (vigente) cambiarCarga(false); });
+    return () => { vigente = false; };
+  }, [filters, intento]);
+  function updateFilters(cambios: Partial<LogFilterParams>) {
+    cambiarFiltros(anteriores => ({ ...anteriores, ...cambios, page: cambios.page ?? 1 }));
+  }
+  return { datos, loading, error, filters, updateFilters, actualizado,
+    refresh: () => cambiarIntento(valor => valor + 1) };
+}
