@@ -5,7 +5,10 @@ import React from 'react';
  * Construye elementos React en lugar de HTML, así el texto del LLM nunca se inyecta como markup.
  */
 
-const INLINE = /(\*\*[^*]+\*\*|__[^_]+__|\*[^*\s][^*]*\*|_[^_\s][^_]*_|`[^`]+`)/g;
+const INLINE = /(\*\*[^*]+\*\*|__[^_]+__|\*[^*\s][^*]*\*|(?<!\w)_[^_\s][^_]*_(?!\w)|`[^`]+`)/g;
+
+const celdasTabla = (linea: string) => linea.trim().replace(/^\|/, '').replace(/\|$/, '').split(/(?<!\\)\|/).map(celda => celda.trim().replace(/\\\|/g, '|'));
+const esSeparadorTabla = (linea: string) => linea.includes('|') && celdasTabla(linea).every(celda => /^:?-{3,}:?$/.test(celda));
 
 const renderInline = (text: string, keyPrefix: string): React.ReactNode[] =>
   text.split(INLINE).filter(Boolean).map((part, i) => {
@@ -49,8 +52,27 @@ export const renderMarkdown = (markdown: string): React.ReactNode[] => {
     }
   };
 
-  for (const raw of lines) {
-    const line = raw.trim();
+  for (let indice = 0; indice < lines.length; indice++) {
+    const line = lines[indice].trim();
+    if (line.includes('|') && indice + 1 < lines.length && esSeparadorTabla(lines[indice + 1])) {
+      flushParagraph();
+      flushList();
+      const cabeceras = celdasTabla(line);
+      const filas: string[][] = [];
+      indice += 2;
+      while (indice < lines.length && lines[indice].trim() && lines[indice].includes('|')) {
+        filas.push(celdasTabla(lines[indice]));
+        indice++;
+      }
+      indice--;
+      const clave = `tabla-${blocks.length}`;
+      blocks.push(<div key={clave} className="reporte-tabla-markdown"><table>
+        <thead><tr>{cabeceras.map((celda, i) => <th scope="col" key={i}>{renderInline(celda, `${clave}-h-${i}`)}</th>)}</tr></thead>
+        <tbody>{filas.map((fila, i) => <tr key={i}>{cabeceras.map((_, j) =>
+          <td key={j}>{renderInline(fila[j] || '', `${clave}-${i}-${j}`)}</td>)}</tr>)}</tbody>
+      </table></div>);
+      continue;
+    }
     const heading = line.match(/^(#{1,4})\s+(.*)$/);
     const bullet = line.match(/^[-*+]\s+(.*)$/);
     const numbered = line.match(/^\d+[.)]\s+(.*)$/);
@@ -83,6 +105,8 @@ export const renderMarkdown = (markdown: string): React.ReactNode[] => {
 /** Texto plano para la síntesis de voz: sin símbolos de Markdown. */
 export const stripMarkdown = (markdown: string): string =>
   markdown
+    .replace(/^\s*\|?\s*:?-{3,}:?\s*(?:\|\s*:?-{3,}:?\s*)+\|?\s*$/gm, '')
+    .replace(/\|/g, ', ')
     .replace(/`([^`]+)`/g, '$1')
     .replace(/(\*\*|__)(.*?)\1/g, '$2')
     .replace(/(\*|_)(.*?)\1/g, '$2')

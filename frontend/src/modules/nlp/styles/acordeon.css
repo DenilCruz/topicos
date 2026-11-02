@@ -1,0 +1,11 @@
+.nlp-acordeon { border-bottom: 1px solid #263b55; min-width: 0; }
+.nlp-acordeon-boton { width: 100%; display: flex; align-items: center; gap: 10px; padding: 18px 0; background: transparent; color: #e2e8f0; text-align: left; font: inherit; font-weight: 600; }
+.nlp-acordeon-boton:hover { color: #7dd3fc; }
+.nlp-acordeon-boton:focus-visible { outline: 2px solid #38bdf8; outline-offset: 3px; }
+.nlp-acordeon-flecha { flex-shrink: 0; transition: transform 280ms ease; }
+.nlp-acordeon-abierto .nlp-acordeon-flecha { transform: rotate(90deg); }
+.nlp-acordeon-panel { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; transition: grid-template-rows 320ms ease, opacity 220ms ease, visibility 320ms; }
+.nlp-acordeon-abierto .nlp-acordeon-panel { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+.nlp-acordeon-recorte { min-height: 0; overflow: hidden; }
+.nlp-acordeon-interior { padding: 0 0 18px 26px; display: grid; gap: 12px; min-width: 0; }
+@media (prefers-reduced-motion: reduce) { .nlp-acordeon-panel, .nlp-acordeon-flecha { transition: none; } }

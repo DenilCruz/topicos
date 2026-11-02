@@ -1,119 +1,38 @@
-import React, { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { CreateTicketPayload, Dispositivo } from '../types/tickets.types';
-
-const DESCRIPCION_MIN = 10;
-const DESCRIPCION_MAX = 2000;
-
-interface TicketFormProps {
-  dispositivos: Dispositivo[];
-  onSubmit: (payload: CreateTicketPayload) => Promise<string | null>;
-}
-
-export const TicketForm: React.FC<TicketFormProps> = ({ dispositivos, onSubmit }) => {
-  const [titulo, setTitulo] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [dispositivoId, setDispositivoId] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
+interface Propiedades { dispositivos: Dispositivo[]; onSubmit: (datos: CreateTicketPayload) => Promise<string | null>; }
+export function TicketForm({ dispositivos, onSubmit }: Propiedades) {
+  const [titulo, cambiarTitulo] = useState('');
+  const [descripcion, cambiarDescripcion] = useState('');
+  const [dispositivo, cambiarDispositivo] = useState('');
+  const [enviando, cambiarEnvio] = useState(false);
+  const [error, cambiarError] = useState('');
+  const [mensaje, cambiarMensaje] = useState('');
   const longitud = descripcion.trim().length;
-  const descripcionValida = longitud >= DESCRIPCION_MIN && longitud <= DESCRIPCION_MAX;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(null);
-    if (!descripcionValida) {
-      setError(`La descripción debe tener entre ${DESCRIPCION_MIN} y ${DESCRIPCION_MAX} caracteres.`);
-      return;
+  async function enviar(evento: FormEvent) {
+    evento.preventDefault(); cambiarError(''); cambiarMensaje('');
+    if (longitud < 10 || longitud > 2000 || !titulo.trim() || !dispositivo) {
+      cambiarError('Completa el título, selecciona un dispositivo y escribe una descripción de 10 a 2000 caracteres.'); return;
     }
-    setSubmitting(true);
-    const result = await onSubmit({
-      titulo: titulo.trim(),
-      descripcion: descripcion.trim(),
-      dispositivoId: Number(dispositivoId),
-    });
-    setSubmitting(false);
-    if (result) {
-      setError(result);
-    } else {
-      setSuccess('Ticket registrado con estado PENDIENTE_DIAGNOSTICO.');
-      setTitulo('');
-      setDescripcion('');
-      setDispositivoId('');
-    }
-  };
-
-  return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-        backgroundColor: 'var(--bg-secondary)',
-        padding: '1.5rem',
-        borderRadius: '8px',
-      }}
-    >
-      <h3>Reportar incidente</h3>
-
-      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-        <input
-          type="text"
-          placeholder="Título"
-          value={titulo}
-          onChange={(e) => setTitulo(e.target.value)}
-          maxLength={255}
-          required
-          style={{ flex: '2 1 240px' }}
-        />
-        <select
-          value={dispositivoId}
-          onChange={(e) => setDispositivoId(e.target.value)}
-          required
-          style={{ flex: '1 1 200px' }}
-        >
-          <option value="">Selecciona un dispositivo</option>
-          {dispositivos.map((d) => (
-            <option key={d.id} value={d.id}>
-              {d.ubicacion ? `${d.nombre} — ${d.ubicacion}` : d.nombre}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-        <textarea
-          placeholder="Describe la falla en lenguaje natural (p. ej. 'El switch del piso 2 tiene puertos bloqueados por spanning tree')"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-          rows={4}
-          required
-          style={{ resize: 'vertical' }}
-        />
-        <span style={{ fontSize: '0.75rem', color: descripcion && !descripcionValida ? 'var(--danger)' : 'var(--text-secondary)' }}>
-          {longitud} / {DESCRIPCION_MAX} caracteres (mínimo {DESCRIPCION_MIN})
-        </span>
-      </div>
-
-      {error && (
-        <div style={{ padding: '0.75rem', backgroundColor: '#450a0a', color: '#f87171', borderRadius: '6px' }}>{error}</div>
-      )}
-      {success && (
-        <div style={{ padding: '0.75rem', backgroundColor: '#052e16', color: 'var(--success)', borderRadius: '6px' }}>{success}</div>
-      )}
-
-      <div>
-        <button
-          type="submit"
-          disabled={submitting}
-          style={{ backgroundColor: 'var(--primary)', color: '#fff', opacity: submitting ? 0.6 : 1 }}
-        >
-          {submitting ? 'Registrando...' : 'Registrar ticket'}
-        </button>
-      </div>
-    </form>
-  );
-};
+    cambiarEnvio(true);
+    try {
+      const fallo = await onSubmit({ titulo: titulo.trim(), descripcion: descripcion.trim(), dispositivoId: Number(dispositivo) });
+      if (fallo) cambiarError(fallo);
+      else { cambiarTitulo(''); cambiarDescripcion(''); cambiarDispositivo(''); cambiarMensaje('Ticket registrado. Ya puedes consultarlo en el historial.'); }
+    } catch { cambiarError('No se pudo registrar el ticket. Intenta nuevamente.'); }
+    finally { cambiarEnvio(false); }
+  }
+  return <section className="tickets-formulario"><header><span className="tickets-etiqueta">Nuevo reporte</span><h2>Reportar incidente</h2></header>
+    <form onSubmit={enviar}><fieldset disabled={enviando}>
+      <div className="tickets-campos"><label>Título<input required maxLength={255} placeholder="Título del incidente" value={titulo} onChange={e => cambiarTitulo(e.target.value)} /></label>
+        <label>Dispositivo<select required value={dispositivo} onChange={e => cambiarDispositivo(e.target.value)}>
+          <option value="">Selecciona un dispositivo</option>{dispositivos.map(d => <option key={d.id} value={d.id}>{d.nombre}{d.ubicacion ? ` — ${d.ubicacion}` : ''}</option>)}</select></label></div>
+      {!dispositivos.length && <p className="tickets-nota">No hay dispositivos disponibles. Comprueba el catálogo o actualiza la página.</p>}
+      <label>Descripción<textarea rows={4} required minLength={10} maxLength={2000} value={descripcion}
+        onChange={e => cambiarDescripcion(e.target.value)} placeholder="Describe los síntomas de la falla en lenguaje natural…" /></label>
+      <div className="tickets-fila"><span className="tickets-contador">{longitud} / 2000 caracteres (mínimo 10)</span>
+        <button type="submit" className="tickets-primario" disabled={!dispositivos.length}>{enviando && <span className="tickets-spinner" aria-hidden="true" />}{enviando ? 'Registrando…' : 'Registrar ticket'}</button></div>
+    </fieldset></form>
+    {error && <p className="tickets-error" role="alert">{error}</p>}{mensaje && <p className="tickets-exito" role="status">{mensaje}</p>}
+  </section>;
+}

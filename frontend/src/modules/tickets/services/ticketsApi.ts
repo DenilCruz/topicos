@@ -3,6 +3,10 @@ import { ApiResponse } from '@/shared/types/common.types';
 import { CreateTicketPayload, Dispositivo, Ticket, TicketFilterParams, TicketPage } from '../types/tickets.types';
 
 export const ticketsApi = {
+  getOpciones: async (): Promise<{ estados: string[]; prioridades: string[] }> => {
+    const respuesta = await httpClient.get('/reports/opciones');
+    return respuesta.data;
+  },
   getTickets: async (filters: TicketFilterParams = {}): Promise<TicketPage> => {
     const response = await httpClient.get<TicketPage>('/tickets', { params: filters });
     return response.data;

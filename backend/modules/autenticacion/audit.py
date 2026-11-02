@@ -7,6 +7,8 @@ con la transacción principal.
 import time
 import functools
 import logging
+import json
+import inspect
 from typing import Callable, Any, Optional
 
 logger = logging.getLogger(__name__)
@@ -67,20 +69,23 @@ def auditable(action_name: Optional[str] = None):
                 try:
                     from modules.autenticacion.domain.models import AuditLog
                     
-                    output_summary = str(result) if not exception_raised else f"ERROR: {exception_raised}"
-                    audit_message = f"Acción: {op_name} | Entrada: {input_summary} | Salida/Predicción: {output_summary}"
-                    severity = 'ERROR' if exception_raised else 'INFO'
-                    status_code = 500 if exception_raised else 200
-
+                    argumentos = inspect.signature(func).bind_partial(*args, **kwargs).arguments
+                    texto = argumentos.get('texto') or argumentos.get('text')
+                    categoria = None
+                    if isinstance(result, dict):
+                        categoria = result.get('categoria_predecida') or result.get('categoria')
+                    if texto is None and argumentos.get('ticket_id'):
+                        from modules.tickets.domain.models import Ticket
+                        texto = Ticket.objects.filter(pk=argumentos['ticket_id']).values_list('descripcion', flat=True).first()
+                    entrada = {**input_summary, 'error': str(exception_raised) if exception_raised else None}
                     AuditLog.objects.create(
-                        method='AUDIT',
-                        path=f"operation://{op_name}",
-                        status_code=status_code,
-                        duration_ms=duration_ms,
-                        user_identifier=user_identifier,
-                        ip_address=ip_address,
-                        severity=severity,
-                        message=audit_message
+                        usuario=user_identifier[:100],
+                        ip_origen=ip_address[:45],
+                        metodo_accion=op_name[:100],
+                        parametros_entrada=json.dumps(entrada, ensure_ascii=False),
+                        texto_analizado=texto,
+                        prediccion_emitida=str(categoria)[:100] if categoria is not None else None,
+                        tiempo_ejecucion_ms=round(duration_ms),
                     )
                 except Exception as log_error:
                     # Garantiza que el fallo de auditoría jamás interfiera con la operación principal

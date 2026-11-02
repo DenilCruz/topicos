@@ -1,30 +1,25 @@
 from django.db import migrations, models
 
-class Migration(migrations.Migration):
 
-    dependencies = [
-        ('autenticacion', '0001_initial'),
-    ]
+class Migration(migrations.Migration):
+    # Esta migración estaba pendiente: registra el mapeo sin crear audit_logs.
+    # La tabla ya existe en Supabase y se administra fuera de Django.
+    dependencies = [('autenticacion', '0001_initial')]
 
     operations = [
         migrations.CreateModel(
             name='AuditLog',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('user_identifier', models.CharField(blank=True, db_index=True, max_length=150, null=True)),
-                ('method', models.CharField(default='AUDIT', max_length=10)),
-                ('path', models.CharField(db_index=True, max_length=500)),
-                ('status_code', models.IntegerField(default=200)),
-                ('duration_ms', models.FloatField(default=0.0)),
-                ('ip_address', models.GenericIPAddressField(blank=True, null=True)),
-                ('severity', models.CharField(default='INFO', max_length=15)),
-                ('message', models.TextField(blank=True, default='')),
+                ('usuario', models.CharField(max_length=100, null=True, blank=True)),
+                ('ip_origen', models.CharField(max_length=45, null=True, blank=True)),
+                ('metodo_accion', models.CharField(max_length=100, null=True, blank=True)),
+                ('parametros_entrada', models.TextField(null=True, blank=True)),
+                ('texto_analizado', models.TextField(null=True, blank=True)),
+                ('prediccion_emitida', models.CharField(max_length=100, null=True, blank=True)),
+                ('tiempo_ejecucion_ms', models.IntegerField(null=True, blank=True)),
+                ('fecha_registro', models.DateTimeField(auto_now_add=True, null=True, blank=True)),
             ],
-            options={
-                'db_table': 'audit_logs',
-                'ordering': ['-timestamp'],
-            },
+            options={'managed': False, 'db_table': 'audit_logs', 'ordering': ['-fecha_registro']},
         ),
     ]
-

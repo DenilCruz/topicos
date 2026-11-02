@@ -15,6 +15,8 @@ const extractError = (err: any, fallback: string): string => {
 };
 
 export const useTickets = () => {
+  const [opciones, cambiarOpciones] = useState<{ estados: string[]; prioridades: string[] }>({ estados: [], prioridades: [] });
+  useEffect(() => { let activo = true; ticketsApi.getOpciones().then(datos => { if (activo) cambiarOpciones(datos); }).catch(() => {}); return () => { activo = false; }; }, []);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [filters, setFilters] = useState<TicketFilterParams>({ page: 1, size: PAGE_SIZE });
   const [totalElements, setTotalElements] = useState<number>(0);
@@ -68,6 +70,7 @@ export const useTickets = () => {
   };
 
   return {
+    opciones,
     tickets,
     dispositivos,
     loading,

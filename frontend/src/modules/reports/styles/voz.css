@@ -1,0 +1,44 @@
+.voz-panel { padding: 28px; border: 1px solid #1b2742; border-radius: 14px; background: #0b1324; box-shadow: 0 14px 35px #0003; gap: 22px; }
+.voz-panel .reporte-cabecera { padding-bottom: 22px; border-bottom: 1px solid #16233a; }
+.voz-panel .reporte-proveedor { justify-content: flex-start; color: #cbd5e1; }
+.voz-panel .reporte-captura { padding: 0 0 10px; gap: 28px; background: transparent; border: 0; }
+.voz-interaccion { padding: 44px 0 6px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+.voz-microfono-marco { position: relative; width: 84px; height: 84px; display: grid; place-items: center; isolation: isolate; }
+.voz-panel button.voz-microfono { position: relative; z-index: 2; width: 84px; height: 84px; padding: 0; display: grid; place-items: center; border-radius: 50%; border: 1px solid #38bdf8; color: white; background: linear-gradient(#38bdf8, #0284c7); box-shadow: 0 8px 28px #0284c74d; transition: transform 180ms, box-shadow 180ms, background 180ms; }
+.voz-panel button.voz-microfono:hover:not(:disabled) { transform: scale(1.06); background: linear-gradient(#7dd3fc, #0ea5e9); box-shadow: 0 8px 35px #0ea5e966; }
+.voz-panel button.voz-microfono:active:not(:disabled) { transform: scale(.95); }
+.voz-anillo { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; background: #38bdf814; border: 1px solid #38bdf826; animation: voz-reposo 3s ease-in-out infinite; }
+.voz-anillo-dos { display: none; }
+.voz-escuchando .voz-anillo { display: block; animation: voz-expandir 1.8s ease-out infinite; background: #38bdf820; border-color: #38bdf84d; }
+.voz-escuchando .voz-anillo-dos { animation-delay: .6s; }
+.voz-panel .voz-escuchando button.voz-microfono { background: linear-gradient(#fb4363, #e11d48); border-color: #fb7185; box-shadow: 0 8px 28px #e11d4840; }
+.voz-panel .voz-escuchando button.voz-microfono:hover { background: #e11d48; }
+.voz-procesando .voz-anillo { animation-play-state: paused; opacity: .4; }
+.voz-ondas { height: 24px; display: flex; align-items: center; gap: 4px; margin-top: 24px; opacity: 0; transition: opacity 200ms; }
+.voz-escuchando .voz-ondas { opacity: 1; }
+.voz-ondas span { width: 4px; height: 4px; background: #38bdf8; border-radius: 4px; }
+.voz-escuchando .voz-ondas span { animation: voz-onda 850ms ease-in-out infinite; }
+.voz-ondas span:nth-child(even) { background: #67e8f9; }
+.voz-estado { display: flex; align-items: center; justify-content: center; gap: 9px; text-align: center; margin-top: 12px; color: #cbd5e1; }
+.voz-punto { display: none; width: 7px; height: 7px; background: #fb7185; border-radius: 50%; }
+.voz-escuchando .voz-punto { display: inline-block; animation: voz-parpadear 1s infinite; }
+.voz-transcripcion { width: 100%; max-width: 760px; }
+.voz-transcripcion-titulo { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: #94a3b8; margin-bottom: 9px; }
+.voz-transcrito { color: #34d399; }
+.voz-transcripcion-caja { min-height: 56px; position: relative; border: 1px solid #1b2944; background: #070d18; border-radius: 10px; padding: 17px 20px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; transition: border-color 200ms, box-shadow 200ms; }
+.voz-transcribiendo { border-color: #236285; box-shadow: 0 0 14px #38bdf80d; }
+.voz-placeholder { color: #64748b; font-style: italic; }
+.voz-cursor { color: #38bdf8; font-weight: 700; margin-left: 5px; animation: voz-parpadear 900ms step-end infinite; }
+.voz-panel .reporte-consulta { max-width: 760px; }
+.voz-panel .reporte-consulta textarea { width: 100%; min-width: 0; resize: vertical; line-height: 1.6; }
+.reporte-tabla-markdown { overflow-x: auto; max-width: 100%; border: 1px solid #253751; border-radius: 8px; }
+.reporte-tabla-markdown table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.reporte-tabla-markdown th, .reporte-tabla-markdown td { text-align: left; padding: 12px 16px; border-bottom: 1px solid #253751; vertical-align: top; }
+.reporte-tabla-markdown th { color: #7dd3fc; background: #0b2135; }
+.reporte-tabla-markdown tbody tr:last-child td { border-bottom: 0; }
+@keyframes voz-reposo { 50% { box-shadow: 0 0 0 15px #38bdf800; transform: scale(1.12); } }
+@keyframes voz-expandir { from { transform: scale(1); opacity: .8; } to { transform: scale(2.1); opacity: 0; } }
+@keyframes voz-onda { 50% { height: 20px; } }
+@keyframes voz-parpadear { 50% { opacity: 0; } }
+@media (max-width: 600px) { .voz-panel { padding: 20px 14px; } .voz-interaccion { padding-top: 32px; } }
+@media (prefers-reduced-motion: reduce) { .voz-panel * { animation: none !important; transition: none !important; } .voz-escuchando .voz-ondas span { height: 12px; } }

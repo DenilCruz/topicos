@@ -16,7 +16,7 @@ export const LoginForm: React.FC = () => {
     setSubmitting(true);
     try {
       await login({ username, password });
-      navigate('/bonita');
+      navigate('/tickets');
     } catch (err: any) {
       setError(err?.response?.data?.error?.message || 'Error al iniciar sesión.');
     } finally {

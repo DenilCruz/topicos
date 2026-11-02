@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '@/shared/components/ProtectedRoute';
 import { LoginForm } from '@/modules/autenticacion/components/LoginForm';
-import { BonitaDashboard } from '@/modules/bonita/components/BonitaDashboard';
 import { NlpDashboard } from '@/modules/nlp/components/NlpDashboard';
 import { LogsDashboard } from '@/modules/logs/components/LogsDashboard';
 import { TicketsDashboard } from '@/modules/tickets/components/TicketsDashboard';
@@ -42,15 +41,6 @@ export const AppRouter: React.FC = () => {
       </Route>
 
       <Route
-        path="/bonita"
-        element={
-          <ProtectedRoute>
-            <BonitaDashboard />
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
         path="/nlp"
         element={
           <ProtectedRoute>
@@ -69,7 +59,7 @@ export const AppRouter: React.FC = () => {
       />
 
       {/* Redirección por defecto */}
-      <Route path="*" element={<Navigate to="/bonita" replace />} />
+      <Route path="*" element={<Navigate to="/tickets" replace />} />
     </Routes>
   );
 };
