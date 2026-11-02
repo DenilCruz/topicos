@@ -28,3 +28,6 @@ dist-ssr/
 
 # Notebooks
 .ipynb_checkpoints/
+
+# Vista previa y validación de documentos generados
+docs/.build/
